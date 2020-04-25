@@ -1,0 +1,19 @@
+{
+  "name": "cpu-monitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.8.19",
+    "connection-tester": "^0.2.0"
+  }
+}
