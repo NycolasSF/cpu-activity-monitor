@@ -1,6 +1,6 @@
 const contrib = require("blessed-contrib");
 const { system, quicklook, upTime } = require("../services/api");
-const { setLineData, setFormatTime } = require('./utils');
+const { setLineData } = require('./utils');
 
 module.exports = {
 
@@ -38,8 +38,8 @@ module.exports = {
   system_info(grid, url){
       
     let options = {
-      fg: "green",
       label: "System Info",
+      fg: "green",
       tags: true,
       border: { type: "line", fg: "cyan" },
     }
@@ -58,57 +58,39 @@ module.exports = {
 
   },
 
-  monitor_processes(grid, url){
+  monitor_processes(grid, url, {lineCPU, lineMEM}){
 
     let options = {
-      showNthLabel: 5,
-      maxY: 100,
       label: "Monitor Process",
+      showNthLabel: 5,
+      wholeNumbersOnly: false,
       showLegend: true,
-      legend: { width: 10 },
+      legend: { width: 5 },
     };
 
     let line = grid.set(0, 4, 5.5, 8, contrib.line, options);
 
 
-    let uptime = upTime(url).then(({type, body})=> body);
-
-    setInterval(()=>{
-      uptime = setFormatTime(uptime);
-
-
-      let data = quicklook(url);
-
-      let response = data.then(({ type, body }) => {
-        if (type === "response") {
-  
-          return {
-            lineCPU:  {
-              title: "CPU",
-              style: { line: "red" },
-              x: [...uptime],
-              y: [...body.cpu],
-            },
-            lineMEM: {
-              title: "MEM",
-              style: { line: "blue" },
-              x: [...uptime],
-              y: [...body.mem],
-            }    
-          }
-          
-        }
+    upTime(url).then(({type, body})=> {
+      let uptime = body;
+      
+      quicklook(url).then(({ type, body }) => {
+        let cpu = body.cpu,
+            mem = body.mem;       
+        lineCPU.x.push(uptime);
+        lineMEM.x.push(uptime);
+        lineMEM.y.push(mem);
+        lineCPU.y.push(cpu);
       });
-
-      // setLineData([response.lineCPU, response.lineMEM], line);
-
-      // uptime *= 0.8; 
-
-    }, 800);
-
+    });
     
+    setLineData([lineCPU, lineMEM], line);
+
+  
+  },
+  
+  active_processes(grid, url){
+
   }
-
-    
 
 }

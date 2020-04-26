@@ -1,15 +1,12 @@
 module.exports = {
-  setLineData(mockData, line) {
-    for (var i = 0; i < mockData.length; i++) {
-      var last = mockData[i].y[mockData[i].y.length - 1];
-      mockData[i].y.shift();
-      var num = Math.max(last + Math.round(Math.random() * 10) - 5, 10);
-      mockData[i].y.push(num);
-    }
+  setLineData(data, line) {
+    for(let i = 0; i < data.length; i++){
 
-    line.setData(mockData);
-  },
-  setFormatTime(s){
-    return(s-(s%=60))/60+(9<s?':':':0')+s;
-  }
+      if(data[i].x.length >= 20){
+       data[i].x.shift();
+       data[i].y.shift();
+      }             
+    };    
+    line.setData(data);
+  } 
 };

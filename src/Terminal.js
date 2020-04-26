@@ -10,6 +10,23 @@ module.exports = class Terminal{
     this.url = "localhost";
     this.port = 61208;
     this.compURL = `http://${this.url}:${this.port}/api/3`;
+
+    this.data = {
+      'monitor_processes': {
+        lineCPU: {
+          title: "CPU",
+          style: { line: "red" },
+          x: ['0:00:00'],
+          y: [0],
+        },
+        lineMEM: {
+          title: "MEM",
+          style: { line: "yellow" },
+          x: ['0:00:00'],
+          y: [0],
+        }
+      }
+    };
   }
 
   async createTerminal() {
@@ -18,8 +35,14 @@ module.exports = class Terminal{
       if(output.success === true){
 
         system_info(this.grid, this.compURL);
-        monitor_processes(this.grid, this.compURL);
-        
+
+        setInterval(()=>{
+         monitor_processes(this.grid, this.compURL, this.data.monitor_processes);
+         this.screen.render()
+        }, 300);
+
+
+
       }else{
         apiError(this.screen, output.error);
         return;
