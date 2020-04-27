@@ -9,8 +9,10 @@ const grid = new contrib.grid({
     screen: screen,
 });
 
-let initTerminal = new Terminal(screen, grid);
+let initTerminal = new Terminal(blessed, screen, grid);
 
 initTerminal.createTerminal();
 
-
+screen.key(["escape", "q", "C-c"], function (ch, key) {
+  return process.exit(0);
+});

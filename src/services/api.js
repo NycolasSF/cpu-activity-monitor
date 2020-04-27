@@ -66,6 +66,24 @@ module.exports = {
 
     return data;
   },
+  async processList(url) {
+    let data = await axios
+      .get(`${url}/processlist`)
+      .then((response) => {
+        return {
+          type: "response",
+          body: response.data,
+        };
+      })
+      .catch((error) => {
+        return {
+          type: "error",
+          body: error,
+        };
+      });
+
+    return data;
+  },
 
   async now(url) {
     //get data
