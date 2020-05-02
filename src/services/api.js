@@ -47,10 +47,9 @@ module.exports = {
     return data;
   },
 
-  // * --- TIMERS --- \\
-  async upTime(url) {
+  async processList(url) {
     let data = await axios
-      .get(`${url}/uptime`)
+      .get(`${url}/processlist`)
       .then((response) => {
         return {
           type: "response",
@@ -66,9 +65,68 @@ module.exports = {
 
     return data;
   },
-  async processList(url) {
+
+  async pluginsList(url) {
     let data = await axios
-      .get(`${url}/processlist`)
+      .get(`${url}/pluginslist`)
+      .then((response) => {
+        return {
+          type: "response",
+          body: response.data,
+        };
+      })
+      .catch((error) => {
+        return {
+          type: "error",
+          body: error,
+        };
+      });
+
+    return data;
+  },
+
+  async batPercent(url) {
+    let data = await axios
+      .get(`${url}/batpercent`)
+      .then((response) => {
+        return {
+          type: "response",
+          body: response.data[0],
+        };
+      })
+      .catch((error) => {
+        return {
+          type: "error",
+          body: error,
+        };
+      });
+
+    return data;
+  },
+
+  async perCpu(url) {
+    let data = await axios
+      .get(`${url}/percpu`)
+      .then((response) => {
+        return {
+          type: "response",
+          body: response.data,
+        };
+      })
+      .catch((error) => {
+        return {
+          type: "error",
+          body: error,
+        };
+      });
+
+    return data;
+  },
+
+  // * --- TIMERS --- \\
+  async upTime(url) {
+    let data = await axios
+      .get(`${url}/uptime`)
       .then((response) => {
         return {
           type: "response",

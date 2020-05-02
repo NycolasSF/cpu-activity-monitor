@@ -9,10 +9,15 @@ const grid = new contrib.grid({
     screen: screen,
 });
 
-let initTerminal = new Terminal(blessed, screen, grid);
+let initTerminal = new Terminal(blessed,  contrib, screen, grid);
 
 initTerminal.createTerminal();
+initTerminal.onResize();
+
 
 screen.key(["escape", "q", "C-c"], function (ch, key) {
   return process.exit(0);
 });
+
+initTerminal.onFocus();
+screen.render();

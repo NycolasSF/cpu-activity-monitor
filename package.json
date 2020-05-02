@@ -6,7 +6,7 @@
   "scripts": {
     "start": "glances -w & \n \n \n node src/index.js",
     "dev": " nodemon src/index.js ",
-    "glances": ""
+    "glances": "glances -w &"
   },
   "keywords": [],
   "author": "",
