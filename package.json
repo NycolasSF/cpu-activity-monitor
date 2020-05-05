@@ -4,9 +4,9 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "glances -w & \n \n \n node src/index.js",
-    "dev": " nodemon src/index.js ",
-    "glances": "glances -w &"
+    "start": "node src/index.js",
+    "dev": " nodemon --unhandled-rejections=strict src/index.js ",
+    "glances": "glances -w "
   },
   "keywords": [],
   "author": "",

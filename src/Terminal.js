@@ -38,7 +38,7 @@ module.exports = class Terminal{
   }
 
   async createTerminal() {
-    await connectionTester.test(this.url, this.port, 200, (err, output) => {
+    await connectionTester.test(this.url, this.port, 500, (err, output) => {
 
       if(output.success === true){
 
@@ -51,7 +51,7 @@ module.exports = class Terminal{
           active_processes(this.objectsScreen.active_processes, this.compURL, this.data.active_processes);
           monitor_processes(this.objectsScreen.monitor_processes, this.compURL, this.data.monitor_processes);
           this.screen.render();
-        }, 300);
+        }, 1000);
         
       }else{
         apiError(this.screen, output.error, this.contrib);

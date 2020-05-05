@@ -1,4 +1,4 @@
-const { system, quicklook, upTime, now, processList, pluginsList, batPercent, perCpu } = require("../services/api");
+const { system, quicklook, upTime, now, processList, pluginsList, sensors, perCpu } = require("../services/api");
 const { setLineData, setTableData, setLogsData } = require('./utils');
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
       elementSpacing: 10,
       elementPadding: 8,
     });
-    screen.append(lcd);
+    screen.append(lcd);body
 
     setInterval(function () {
 
@@ -91,10 +91,13 @@ module.exports = {
         setTimeout(()=>{
           log.log(`Plugins on`);
           log.log(`Listing...`);
+          
           let i = 0;
           setInterval(()=>{
-            setLogsData(log, body, i);
-            i < body.length ? i++ : 0;
+            if(i < body.length){
+              setLogsData(log, body, i);
+              i++;            
+            } 
           }, 2000);
 
         }, 800);
@@ -104,15 +107,16 @@ module.exports = {
   },
 
   battery(gauge, url){
-    batPercent(url).then(({ type, body }) => {
-      gauge.setPercent(body.value);
+    sensors(url).then(({ type, body }) => {
+      body.forEach((_sensors)=>{
+        if (_sensors.type === 'battery') {
+          gauge.setPercent(_sensors.value);
+          setInterval(() => {
+            gauge.setPercent(_sensors.value);
+          }, 10000);
+        }
+      })
     });
-    
-    setInterval(()=>{
-      batPercent(url).then(({ type, body }) => {
-        gauge.setPercent(body.value);
-      });
-    }, 10000)
   },
 
   cores(donut, url){
@@ -120,6 +124,7 @@ module.exports = {
     perCpu(url).then(({type, body})=>{
       let data = [];
 
+      if(type !== 'response' ) return data.push({percent: 0, label: 'ERROR'})
       body.forEach((cpu)=>{
         data.push({
           percent: parseFloat((cpu.total + 0.0) % 1).toFixed(2),

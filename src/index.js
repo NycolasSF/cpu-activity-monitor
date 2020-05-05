@@ -12,7 +12,7 @@ const grid = new contrib.grid({
 let initTerminal = new Terminal(blessed,  contrib, screen, grid);
 
 initTerminal.createTerminal();
-initTerminal.onResize();
+// initTerminal.onResize();
 
 
 screen.key(["escape", "q", "C-c"], function (ch, key) {
